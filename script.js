@@ -84,3 +84,20 @@ window.onload = function() {
         });
     }
 };
+
+function updateCountdown() {
+    const nextYear = new Date().getFullYear() + 1;
+    const target = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
+    const now = new Date().getTime();
+    const gap = target - now;
+
+    const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+    const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+
+    document.getElementById('days').innerText = d;
+    document.getElementById('hours').innerText = h;
+    document.getElementById('minutes').innerText = m;
+}
+setInterval(updateCountdown, 1000);
+
