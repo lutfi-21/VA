@@ -1,62 +1,48 @@
-// --- KONFIGURASI ---
-
-// Fungsi saat tombol "Buka" diklik
+// 1. Fungsi Utama untuk Membuka Halaman
 function bukaUndangan() {
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
     const bgPhoto = document.getElementById('bg-photo');
 
-    // 1. Memutar Musik
-    music.volume = 0.5; // Set volume 50%
-    music.play().catch(error => {
-        console.log("Browser memblokir autoplay, audio akan mulai setelah interaksi.");
-    });
+    // Coba putar musik
+    if (music) {
+        music.volume = 0.5;
+        music.play().catch(err => console.log("Autoplay musik diblokir."));
+    }
 
-    // 2. Efek Zoom pada foto sebelum hilang
-    bgPhoto.style.transform = 'scale(1.2)';
-
-    // 3. Menghilangkan layer Opening
-    opening.style.opacity = '0';
-    opening.style.visibility = 'hidden'; // Supaya tidak bisa diklik lagi
-
-    // 4. Memunculkan konten utama setelah transisi selesai (1.5 detik)
-    setTimeout(() => {
-        opening.style.display = 'none';
-        main.style.display = 'block';
-        
-        // Sedikit delay agar efek fade-in CSS berjalan mulus
+    // Efek transisi visual
+    if (opening) {
+        opening.style.opacity = '0';
         setTimeout(() => {
-            main.style.opacity = '1';
-            mulaiSalju(); // Memanggil fungsi salju
-            cekScroll(); // Memanggil fungsi scroll
-        }, 100);
-    }, 1500);
+            opening.style.display = 'none';
+            if (main) {
+                main.style.display = 'block';
+                setTimeout(() => {
+                    main.style.opacity = '1';
+                    mulaiSalju();
+                    cekScroll();
+                }, 100);
+            }
+        }, 1100);
+    }
 }
 
-// Fungsi Efek Salju (Nuansa Desember)
+// 2. Fungsi Efek Salju
 function mulaiSalju() {
     const container = document.body;
-    const jumlahSalju = 40; // Jumlah butiran
-
-    for (let i = 0; i < jumlahSalju; i++) {
+    for (let i = 0; i < 40; i++) {
         const snow = document.createElement('div');
         snow.className = 'snowflake';
-        snow.innerHTML = '❄'; // Ikon salju
-        
-        // Posisi random
+        snow.innerHTML = '❄';
         snow.style.left = Math.random() * 100 + 'vw';
-        // Kecepatan jatuh random
-        snow.style.animationDuration = (Math.random() * 3 + 5) + 's'; 
-        // Ukuran random
+        snow.style.animationDuration = (Math.random() * 3 + 5) + 's';
         snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
-        
         container.appendChild(snow);
     }
 }
 
-// Fungsi Animasi Scroll (Intersection Observer)
-// Ini membuat teks muncul perlahan saat digulir ke bawah
+// 3. Fungsi Animasi Scroll
 function cekScroll() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -66,49 +52,35 @@ function cekScroll() {
         });
     }, { threshold: 0.1 });
 
-    // Targetkan semua elemen <section>
     document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
     });
 }
 
-// --- KONTROL VIDEO, MUSIK, DAN PESAN RAHASIA ---
-const videoPlayer = document.querySelector('video');
-const musicPlayer = document.getElementById('bg-music');
-const secretMessage = document.getElementById('secret-message');
+// 4. Kontrol Video & Pesan Rahasia
+// Kita gunakan window.onload agar memastikan elemen video sudah terbaca
+window.onload = function() {
+    const videoPlayer = document.querySelector('video');
+    const musicPlayer = document.getElementById('bg-music');
+    const secretMessage = document.getElementById('secret-message');
 
-if (videoPlayer && musicPlayer) {
-    
-    // 1. Saat video mulai diputar, matikan musik latar
-    videoPlayer.addEventListener('play', () => {
-        musicPlayer.pause(); 
-    });
+    if (videoPlayer) {
+        videoPlayer.addEventListener('play', () => {
+            if (musicPlayer) musicPlayer.pause();
+        });
 
-    // 2. Saat video selesai diputar (Puncak Acara)
-    videoPlayer.addEventListener('ended', () => {
-        // Munculkan pesan rahasia
-        secretMessage.style.display = 'block';
-        setTimeout(() => {
-            secretMessage.style.opacity = '1';
-            // Scroll otomatis sedikit ke bawah agar pesan terlihat
-            secretMessage.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-
-        // Putar musik kembali dengan volume sangat kecil (sebagai outro)
-        musicPlayer.volume = 0.2;
-        musicPlayer.play();
-    });
-}
-
-    // OPSIONAL: Jika ingin musik nyala lagi saat video di-pause
-    videoPlayer.addEventListener('pause', () => {
-        // Hapus tanda komentar (//) di bawah jika ingin musik nyala lagi saat pause
-        // musicPlayer.play(); 
-    });
-    
-    // OPSIONAL: Jika ingin musik nyala lagi saat video selesai
-    videoPlayer.addEventListener('ended', () => {
-        // musicPlayer.play();
-    });
-
-}
+        videoPlayer.addEventListener('ended', () => {
+            if (secretMessage) {
+                secretMessage.style.display = 'block';
+                setTimeout(() => {
+                    secretMessage.style.opacity = '1';
+                    secretMessage.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+            if (musicPlayer) {
+                musicPlayer.volume = 0.2;
+                musicPlayer.play();
+            }
+        });
+    }
+};
