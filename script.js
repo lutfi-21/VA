@@ -3,32 +3,30 @@ function bukaUndangan() {
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
-    const bgPhoto = document.getElementById('bg-photo');
+    const visualizer = document.querySelector('.visualizer-wrapper'); // Ambil pembungkusnya
 
-    // 1. Jalankan musik
     if (music) {
         music.volume = 0.5;
-        music.play().catch(err => console.log("Autoplay musik diblokir."));
+        music.play();
         
-        // --- BARIS YANG DITAMBAHKAN ---
-        toggleVisualizer(true); // <-- TAMBAHKAN INI agar batang visualizer mulai goyang
+        // Munculkan visualizer & jalankan animasi
+        if (visualizer) {
+            visualizer.style.display = 'flex'; // Munculkan saat musik main
+            toggleVisualizer(true); 
+        }
     }
 
-    // 2. Efek transisi visual opening
-    if (opening) {
-        opening.style.opacity = '0';
+    // Efek transisi opening
+    opening.style.opacity = '0';
+    setTimeout(() => {
+        opening.style.display = 'none';
+        main.style.display = 'block';
         setTimeout(() => {
-            opening.style.display = 'none';
-            if (main) {
-                main.style.display = 'block';
-                setTimeout(() => {
-                    main.style.opacity = '1';
-                    mulaiSalju();
-                    cekScroll();
-                }, 100);
-            }
-        }, 1100);
-    }
+            main.style.opacity = '1';
+            mulaiSalju();
+            cekScroll();
+        }, 100);
+    }, 1100);
 }
 
 // 2. Fungsi Efek Salju
@@ -121,6 +119,7 @@ function toggleVisualizer(play) {
         }
     });
 }
+
 
 
 
