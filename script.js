@@ -72,19 +72,33 @@ function cekScroll() {
     });
 }
 
-// --- KONTROL MUSIK OTOMATIS ---
-// Ambil elemen video dan audio
+// --- KONTROL VIDEO, MUSIK, DAN PESAN RAHASIA ---
 const videoPlayer = document.querySelector('video');
 const musicPlayer = document.getElementById('bg-music');
+const secretMessage = document.getElementById('secret-message');
 
-// Pastikan elemennya ada sebelum menjalankan perintah
 if (videoPlayer && musicPlayer) {
     
-    // DETEKSI: Saat video mulai diputar (play)
+    // 1. Saat video mulai diputar, matikan musik latar
     videoPlayer.addEventListener('play', () => {
-        // Matikan musik latar perlahan (opsional) atau langsung pause
         musicPlayer.pause(); 
     });
+
+    // 2. Saat video selesai diputar (Puncak Acara)
+    videoPlayer.addEventListener('ended', () => {
+        // Munculkan pesan rahasia
+        secretMessage.style.display = 'block';
+        setTimeout(() => {
+            secretMessage.style.opacity = '1';
+            // Scroll otomatis sedikit ke bawah agar pesan terlihat
+            secretMessage.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+
+        // Putar musik kembali dengan volume sangat kecil (sebagai outro)
+        musicPlayer.volume = 0.2;
+        musicPlayer.play();
+    });
+}
 
     // OPSIONAL: Jika ingin musik nyala lagi saat video di-pause
     videoPlayer.addEventListener('pause', () => {
@@ -96,4 +110,5 @@ if (videoPlayer && musicPlayer) {
     videoPlayer.addEventListener('ended', () => {
         // musicPlayer.play();
     });
+
 }
