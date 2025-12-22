@@ -136,6 +136,29 @@ function typeWriter(element, text, speed = 50) {
 // Cara panggilnya: Masukkan ke dalam fungsi bukaUndangan() 
 // tepat setelah main-container muncul.
 
+function akhiriSemua() {
+    const black = document.getElementById('black-screen');
+    const music = document.getElementById('bg-music');
+    
+    black.style.display = 'flex';
+    setTimeout(() => {
+        black.style.opacity = '1';
+        // Fade out musik
+        let fadeAudio = setInterval(() => {
+            if (music.volume > 0.05) {
+                music.volume -= 0.05;
+            } else {
+                music.pause();
+                clearInterval(fadeAudio);
+            }
+        }, 200);
+    }, 100);
+}
+
+// Munculkan tombol 'Pamit' saat video selesai (tambahkan di event listener video ended)
+// document.getElementById('final-exit').style.display = 'block';
+
+
 
 
 
