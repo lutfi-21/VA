@@ -5,23 +5,16 @@ function bukaUndangan() {
     const music = document.getElementById('bg-music');
     const bgPhoto = document.getElementById('bg-photo');
 
-    // Coba putar musik
+    // 1. Jalankan musik
     if (music) {
         music.volume = 0.5;
         music.play().catch(err => console.log("Autoplay musik diblokir."));
+        
+        // --- BARIS YANG DITAMBAHKAN ---
+        toggleVisualizer(true); // <-- TAMBAHKAN INI agar batang visualizer mulai goyang
     }
 
-    function bukaUndangan() {
-    // ... kode yang sudah ada ...
-    if (music) {
-        music.volume = 0.5;
-        music.play().catch(err => console.log("Autoplay musik diblokir."));
-        toggleVisualizer(true); // <--- TAMBAHKAN BARIS INI
-    }
-    // ... kode sisa lainnya ...
-}
-
-    // Efek transisi visual
+    // 2. Efek transisi visual opening
     if (opening) {
         opening.style.opacity = '0';
         setTimeout(() => {
@@ -128,5 +121,6 @@ function toggleVisualizer(play) {
         }
     });
 }
+
 
 
