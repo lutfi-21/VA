@@ -120,6 +120,23 @@ function toggleVisualizer(play) {
     });
 }
 
+function typeWriter(element, text, speed = 50) {
+    let i = 0;
+    element.innerHTML = ""; // Kosongkan dulu
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+// Cara panggilnya: Masukkan ke dalam fungsi bukaUndangan() 
+// tepat setelah main-container muncul.
+
+
 
 
 
