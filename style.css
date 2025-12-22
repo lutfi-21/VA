@@ -289,3 +289,41 @@ footer {
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(1); opacity: 0.5; }
 }
+
+/* --- STYLE KAPSUL WAKTU --- */
+.time-capsule {
+    margin: 80px 0;
+    padding: 20px 0;
+}
+
+.gallery {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto; /* Agar bisa di-slide ke samping jika foto banyak */
+    padding: 20px 10px;
+    scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+}
+
+.gallery::-webkit-scrollbar {
+    display: none; /* Sembunyikan scrollbar di Chrome/Safari */
+}
+
+.gallery img {
+    width: 180px; /* Lebar foto */
+    height: 250px; /* Tinggi foto */
+    object-fit: cover;
+    border-radius: 10px;
+    filter: grayscale(100%); /* Efek Hitam Putih */
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0; /* Agar foto tidak gepeng */
+}
+
+.gallery img:hover {
+    filter: grayscale(0%); /* Berubah jadi berwarna */
+    transform: scale(1.05) translateY(-10px); /* Sedikit naik dan membesar */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border: 1px solid var(--accent-color);
+}
+
