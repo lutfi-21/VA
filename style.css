@@ -327,54 +327,53 @@ footer {
     border: 1px solid var(--accent-color);
 }
 
-/* --- AUDIO VISUALIZER STYLE --- */
+/* --- AUDIO VISUALIZER STYLE (PERBAIKAN) --- */
 .visualizer-wrapper {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    display: flex;
+    display: none; /* SEMBUNYI DI AWAL */
     align-items: center;
     gap: 12px;
-    z-index: 100;
-    opacity: 0.7;
+    z-index: 1000; /* Supaya selalu di atas */
+    opacity: 0.8;
 }
 
 #visualizer {
     display: flex;
     align-items: flex-end;
     gap: 3px;
-    height: 20px;
+    height: 25px;
 }
 
 .bar {
-    width: 3px;
+    width: 4px;
     background: var(--accent-color);
     border-radius: 2px;
-    /* Animasi default (berhenti) */
-    height: 4px;
-    transition: height 0.2s ease;
+    height: 5px; /* Tinggi saat diam */
 }
 
-/* Class ini akan aktif via JavaScript saat musik jalan */
+/* KUNCI UTAMA: Animasi ini hanya jalan jika class 'animating' ada */
 .bar.animating {
-    animation: bounce 0.8s ease infinite alternate;
+    animation: bounce 0.6s ease infinite alternate;
 }
 
-.bar:nth-child(2) { animation-delay: 0.1s; }
-.bar:nth-child(3) { animation-delay: 0.3s; }
-.bar:nth-child(4) { animation-delay: 0.2s; }
-.bar:nth-child(5) { animation-delay: 0.4s; }
+.bar:nth-child(1) { animation-delay: 0.1s; }
+.bar:nth-child(2) { animation-delay: 0.3s; }
+.bar:nth-child(3) { animation-delay: 0.2s; }
+.bar:nth-child(4) { animation-delay: 0.4s; }
+.bar:nth-child(5) { animation-delay: 0.1s; }
 
 @keyframes bounce {
-    0% { height: 4px; }
-    100% { height: 20px; }
+    0% { height: 5px; }
+    100% { height: 25px; } /* Tinggi saat goyang */
 }
 
 .music-status {
     font-size: 0.7rem;
     color: var(--accent-color);
     letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: sans-serif;
 }
 
 
