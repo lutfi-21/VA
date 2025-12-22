@@ -376,4 +376,24 @@ footer {
     font-family: sans-serif;
 }
 
+#black-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: black;
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 3s ease;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.goodbye-text {
+    color: white;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 2;
+}
+
+
 
