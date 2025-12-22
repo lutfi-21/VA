@@ -1,6 +1,6 @@
 /* --- SETUP DASAR --- */
 :root {
-    --bg-color: #0f0f0f;
+    --bg-color: #050505;
     --text-color: #e0e0e0;
     --accent-color: #d4af37; /* Warna Emas Pudar */
 }
@@ -394,6 +394,7 @@ footer {
     font-size: 1.5rem;
     line-height: 2;
 }
+
 
 
 
