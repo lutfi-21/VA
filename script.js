@@ -11,6 +11,16 @@ function bukaUndangan() {
         music.play().catch(err => console.log("Autoplay musik diblokir."));
     }
 
+    function bukaUndangan() {
+    // ... kode yang sudah ada ...
+    if (music) {
+        music.volume = 0.5;
+        music.play().catch(err => console.log("Autoplay musik diblokir."));
+        toggleVisualizer(true); // <--- TAMBAHKAN BARIS INI
+    }
+    // ... kode sisa lainnya ...
+}
+
     // Efek transisi visual
     if (opening) {
         opening.style.opacity = '0';
@@ -57,19 +67,22 @@ function cekScroll() {
     });
 }
 
-// 4. Kontrol Video & Pesan Rahasia
-// Kita gunakan window.onload agar memastikan elemen video sudah terbaca
+// --- KONTROL VIDEO, MUSIK, VISUALIZER & PESAN RAHASIA ---
 window.onload = function() {
     const videoPlayer = document.querySelector('video');
     const musicPlayer = document.getElementById('bg-music');
     const secretMessage = document.getElementById('secret-message');
 
     if (videoPlayer) {
+        // 1. Saat Video DIPUTAR
         videoPlayer.addEventListener('play', () => {
-            if (musicPlayer) musicPlayer.pause();
+            if (musicPlayer) musicPlayer.pause(); // Musik latar mati
+            toggleVisualizer(false);            // Animasi visualizer berhenti
         });
 
+        // 2. Saat Video SELESAI
         videoPlayer.addEventListener('ended', () => {
+            // Munculkan pesan rahasia
             if (secretMessage) {
                 secretMessage.style.display = 'block';
                 setTimeout(() => {
@@ -77,9 +90,12 @@ window.onload = function() {
                     secretMessage.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
             }
+            
+            // Putar musik lagi sebagai penutup (Outro)
             if (musicPlayer) {
-                musicPlayer.volume = 0.2;
+                musicPlayer.volume = 0.3; // Volume lebih pelan agar syahdu
                 musicPlayer.play();
+                toggleVisualizer(true); // Animasi visualizer jalan lagi
             }
         });
     }
@@ -100,4 +116,17 @@ function updateCountdown() {
     document.getElementById('minutes').innerText = m;
 }
 setInterval(updateCountdown, 1000);
+
+// Fungsi untuk menjalankan/menghentikan animasi bar visualizer
+function toggleVisualizer(play) {
+    const bars = document.querySelectorAll('.bar');
+    bars.forEach(bar => {
+        if (play) {
+            bar.classList.add('animating');
+        } else {
+            bar.classList.remove('animating');
+        }
+    });
+}
+
 
