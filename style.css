@@ -183,4 +183,109 @@ footer {
 
 @keyframes fall {
     to { transform: translateY(105vh); }
+
+}
+
+/* --- STYLING VIDEO SPESIAL --- */
+
+.video-wrapper {
+    margin-top: 100px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+/* Label Teks di atas Video */
+.video-announcement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.line {
+    height: 1px;
+    width: 50px;
+    background: var(--accent-color);
+    display: inline-block;
+}
+
+.final-wish {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+.video-subtext {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 30px;
+    text-align: center !important;
+}
+
+/* Bingkai Video dengan Efek Glow */
+.video-container-special {
+    position: relative;
+    padding: 8px; /* Jarak antara video dan bingkai */
+    background: linear-gradient(45deg, #1a1a1a, #333, #1a1a1a);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(191, 161, 129, 0.2); /* Glow warna emas tipis */
+    border: 1px solid rgba(191, 161, 129, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek saat mouse mendekat atau layar disentuh */
+.video-container-special:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 40px rgba(191, 161, 129, 0.4);
+    border: 1px solid var(--accent-color);
+}
+
+.video-container-special video {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+}
+
+/* --- STYLING PESAN RAHASIA --- */
+.hidden-message {
+    display: none; /* Sembunyi di awal */
+    margin-top: 40px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+.message-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(191, 161, 129, 0.3);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.message-card h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.message-card p {
+    text-align: center !important;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.heart {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.5; }
 }
