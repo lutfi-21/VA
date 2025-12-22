@@ -1,0 +1,186 @@
+/* --- SETUP DASAR --- */
+:root {
+    --bg-color: #0f0f0f;
+    --text-color: #e0e0e0;
+    --accent-color: #d4af37; /* Warna Emas Pudar */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Georgia', serif; 
+    overflow-x: hidden; /* Mencegah scroll ke samping */
+    line-height: 1.8;
+}
+
+/* --- BAGIAN OPENING --- */
+#opening {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #000;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1.5s ease-out, visibility 1.5s;
+}
+
+/* Foto Background Opening */
+#bg-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 10s ease;
+}
+
+/* Lapisan Gelap di atas foto supaya tulisan terbaca */
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(5px); /* Efek Blur Kaca */
+    z-index: 2;
+}
+
+.content-open {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+h1.title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    margin-bottom: 40px;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+button.btn-open {
+    padding: 12px 35px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+}
+
+button.btn-open:hover {
+    background: white;
+    color: black;
+    border-color: white;
+}
+
+/* --- KONTEN UTAMA --- */
+#main-container {
+    display: none; 
+    padding: 60px 25px;
+    max-width: 650px;
+    margin: 0 auto;
+    position: relative;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+/* Animasi Scroll */
+section {
+    margin: 60px 0;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1.2s ease;
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+p {
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    text-align: justify; /* Rata kanan kiri */
+}
+
+.highlight {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* --- VIDEO --- */
+.video-wrapper {
+    margin-top: 100px;
+    text-align: center;
+    border-top: 1px solid #333;
+    padding-top: 50px;
+}
+
+.video-intro {
+    text-align: center; 
+    margin-bottom: 20px; 
+    font-style: italic; 
+    font-size: 0.9rem; 
+    color: #888;
+}
+
+.video-frame {
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 12px;
+    background: #1a1a1a;
+}
+
+video {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+
+footer {
+    text-align: center;
+    margin-top: 120px;
+    margin-bottom: 50px;
+    font-size: 0.75rem;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+/* --- EFEK SALJU --- */
+.snowflake {
+    position: fixed;
+    top: -20px;
+    z-index: -1;
+    color: white;
+    opacity: 0.4;
+    user-select: none;
+    pointer-events: none;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(105vh); }
+}
