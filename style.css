@@ -507,6 +507,23 @@ footer {
     }
 }
 
+/* --- KODE REVEAL (PENTING) --- */
+
+/* 1. Kondisi awal: Semua elemen yang mau kita munculin saat scroll harus disembunyikan dulu */
+.reveal {
+    position: relative;
+    transform: translateY(30px); /* Teks muncul sedikit dari bawah */
+    opacity: 0;                 /* Teks tidak terlihat */
+    transition: all 1.2s ease;  /* Durasi gerakannya 1.2 detik */
+}
+
+/* 2. Kondisi akhir: Saat JavaScript menambahkan class 'active', teks jadi terlihat */
+.reveal.active {
+    transform: translateY(0);   /* Kembali ke posisi asli */
+    opacity: 1;                 /* Teks jadi terlihat jelas */
+}
+
+
 
 
 
