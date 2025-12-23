@@ -100,13 +100,28 @@ button.btn-open:hover {
 
 /* --- KONTEN UTAMA --- */
 #main-container {
-    display: none; 
-    padding: 60px 25px;
-    max-width: 650px;
-    margin: 0 auto;
+    display: none; /* Tetap tersembunyi di awal */
+    padding: 100px 25px; /* Memberi ruang atas bawah */
+    min-height: 100vh;
     position: relative;
     opacity: 0;
     transition: opacity 2s ease;
+    
+    /* --- PENGATURAN FOTO BACKGROUND --- */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                      url('nama-foto-kamu.jpg'); /* GANTI DENGAN NAMA FILE FOTOMU */
+    background-attachment: fixed; /* Efek Parallax: Foto diam saat di-scroll */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Tambahkan ini agar teks terlihat lebih menonjol di atas foto */
+#main-container p, #main-container h2 {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Bayangan teks agar jelas */
+    line-height: 1.8;
+    margin-bottom: 30px;
 }
 
 /* Animasi Scroll */
@@ -397,6 +412,7 @@ footer {
     font-size: 1.5rem;
     line-height: 2;
 }
+
 
 
 
