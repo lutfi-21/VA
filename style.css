@@ -424,6 +424,15 @@ footer {
     max-width: 500px;
 }
 
+#greeting-text {
+    font-family: 'Playfair Display', serif; /* Font klasik yang elegan */
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    transition: all 0.5s ease;
+}
+
+
 
 
 
