@@ -3,20 +3,30 @@ function bukaUndangan() {
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
-    const visualizer = document.querySelector('.visualizer-wrapper'); // Ambil pembungkusnya
+    const ink = document.getElementById('ink-layer');
 
+    // 1. Jalankan sapaan dan musik
     setPersonalGreeting();
+    if (music) { music.play(); toggleVisualizer(true); }
 
-    if (music) {
-        music.volume = 0.5;
-        music.play();
+    // 2. Aktifkan Rembesan Tinta
+    ink.classList.add('active');
+
+    // 3. Saat tinta menutupi layar (sekitar 1 detik), tukar konten di belakangnya
+    setTimeout(() => {
+        opening.style.display = 'none';
+        main.style.display = 'block';
+        main.style.opacity = '1';
         
-        // Munculkan visualizer & jalankan animasi
-        if (visualizer) {
-            visualizer.style.display = 'flex'; // Munculkan saat musik main
-            toggleVisualizer(true); 
-        }
-    }
+        // Mulai salju jika ada
+        if (typeof salju === "function") salju();
+        
+        // 4. Setelah konten siap, pudarkan tinta agar konten terlihat
+        setTimeout(() => {
+            ink.classList.add('fade-out');
+        }, 500);
+    }, 1200);
+}
 
     // Efek transisi opening
     opening.style.opacity = '0';
@@ -215,6 +225,7 @@ document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
         lastTap = curTime;
     });
 });
+
 
 
 
