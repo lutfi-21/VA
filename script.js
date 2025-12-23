@@ -5,6 +5,8 @@ function bukaUndangan() {
     const music = document.getElementById('bg-music');
     const visualizer = document.querySelector('.visualizer-wrapper'); // Ambil pembungkusnya
 
+    setPersonalGreeting();
+
     if (music) {
         music.volume = 0.5;
         music.play();
@@ -157,6 +159,28 @@ function akhiriSemua() {
 
 // Munculkan tombol 'Pamit' saat video selesai (tambahkan di event listener video ended)
 // document.getElementById('final-exit').style.display = 'block';
+
+function setPersonalGreeting() {
+    const greetingElement = document.getElementById('greeting-text');
+    const hour = new Date().getHours();
+    let greeting = "";
+
+    if (hour >= 5 && hour < 11) {
+        greeting = "Selamat Pagi";
+    } else if (hour >= 11 && hour < 15) {
+        greeting = "Selamat Siang";
+    } else if (hour >= 15 && hour < 18) {
+        greeting = "Selamat Sore";
+    } else {
+        greeting = "Selamat Malam";
+    }
+
+    // Kamu bisa kustomisasi sapaannya di sini
+    if (greetingElement) {
+        greetingElement.innerText = `${greeting}, Kamu.`;
+    }
+}
+
 
 
 
