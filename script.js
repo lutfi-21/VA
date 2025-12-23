@@ -5,27 +5,43 @@ function bukaUndangan() {
     const music = document.getElementById('bg-music');
     const ink = document.getElementById('ink-layer');
 
-    // 1. Jalankan sapaan dan musik
-    setPersonalGreeting();
-    if (music) { music.play(); toggleVisualizer(true); }
+    // Cek apakah fungsi sapaan ada sebelum dipanggil
+    if (typeof setPersonalGreeting === "function") {
+        setPersonalGreeting();
+    }
 
-    // 2. Aktifkan Rembesan Tinta
-    ink.classList.add('active');
+    // Jalankan musik
+    if (music) {
+        music.play().catch(e => console.log("Audio play blocked by browser"));
+        if (typeof toggleVisualizer === "function") {
+            toggleVisualizer(true);
+        }
+    }
 
-    // 3. Saat tinta menutupi layar (sekitar 1 detik), tukar konten di belakangnya
+    // EFEK TRANSISI TINTA
+    if (ink) {
+        ink.classList.add('active'); // Tinta menutup layar
+    }
+
+    // Tunggu tinta menutup sempurna, baru tukar konten
     setTimeout(() => {
-        opening.style.display = 'none';
-        main.style.display = 'block';
-        main.style.opacity = '1';
+        if (opening) opening.style.display = 'none';
         
-        // Mulai salju jika ada
-        if (typeof salju === "function") salju();
-        
-        // 4. Setelah konten siap, pudarkan tinta agar konten terlihat
+        if (main) {
+            main.style.display = 'block'; // Munculkan container utama
+            // Kasih jeda sedikit agar display:block selesai diproses browser
+            setTimeout(() => {
+                main.style.opacity = '1';
+                if (typeof scrollReveal === "function") scrollReveal();
+            }, 50);
+        }
+
+        // Pudarkan lapisan tinta
         setTimeout(() => {
-            ink.classList.add('fade-out');
+            if (ink) ink.classList.add('fade-out');
         }, 500);
-    }, 1200);
+        
+    }, 1200); // Durasi ini harus sinkron dengan transition di CSS (1.5s)
 }
 
     // Efek transisi opening
@@ -225,6 +241,7 @@ document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
         lastTap = curTime;
     });
 });
+
 
 
 
