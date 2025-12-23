@@ -424,6 +424,19 @@ footer {
     max-width: 500px;
 }
 
+.cursor-dot, .cursor-outline {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 10002;
+    transition: opacity 0.3s ease-in-out;
+}
+.cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); }
+.cursor-outline { width: 30px; height: 30px; border: 2px solid var(--accent-color); transition: all 0.15s ease-out; }
+
+
 
 
 
