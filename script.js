@@ -181,6 +181,42 @@ function setPersonalGreeting() {
     }
 }
 
+// Fungsi untuk memunculkan hati
+function createHeart(e) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️"; // Kamu bisa ganti jadi emoji lain kalau mau
+    heart.className = "heart-pop";
+    
+    // Tentukan posisi hati pas di titik klik
+    heart.style.left = (e.clientX || e.touches[0].clientX) + "px";
+    heart.style.top = (e.clientY || e.touches[0].clientY) + "px";
+    
+    document.body.appendChild(heart);
+    
+    // Hapus elemen dari HTML setelah animasi selesai (1 detik)
+    setTimeout(() => {
+        heart.remove();
+    }, 800);
+}
+
+// Daftarkan fungsi ke semua foto yang ada class 'grad-photo' atau 'photo-item'
+document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
+    photo.addEventListener('dblclick', createHeart);
+    
+    // Khusus untuk pengguna HP (Touch screen)
+    let lastTap = 0;
+    photo.addEventListener('touchstart', function(e) {
+        let curTime = new Date().getTime();
+        let tapLen = curTime - lastTap;
+        if (tapLen < 300 && tapLen > 0) {
+            createHeart(e);
+            e.preventDefault(); // Mencegah zoom bawaan HP
+        }
+        lastTap = curTime;
+    });
+});
+
+
 
 
 
