@@ -177,9 +177,10 @@ function setPersonalGreeting() {
 
     // Kamu bisa kustomisasi sapaannya di sini
     if (greetingElement) {
-        greetingElement.innerText = `${greeting}, Rafifah Diva Helsya.`;
+        greetingElement.innerText = `${greeting}, Rafifah Diva Helsya, S.H.`;
     }
 }
+
 
 
 
