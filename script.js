@@ -158,6 +158,21 @@ function akhiriSemua() {
 // Munculkan tombol 'Pamit' saat video selesai (tambahkan di event listener video ended)
 // document.getElementById('final-exit').style.display = 'block';
 
+const dot = document.querySelector(".cursor-dot");
+const outline = document.querySelector(".cursor-outline");
+
+window.addEventListener("mousemove", (e) => {
+    dot.style.left = e.clientX + "px";
+    dot.style.top = e.clientY + "px";
+    
+    // Outline bergerak sedikit lebih lambat
+    outline.animate({
+        left: e.clientX + "px",
+        top: e.clientY + "px"
+    }, { duration: 500, fill: "forwards" });
+});
+
+
 
 
 
