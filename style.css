@@ -480,6 +480,34 @@ footer {
     line-height: 1.8;
 }
 
+/* Styling Animasi Hati */
+.heart-pop {
+    position: fixed;
+    font-size: 80px; /* Ukuran hati */
+    color: #ff4b2b; /* Warna merah hati */
+    text-shadow: 0 0 20px rgba(255, 75, 43, 0.5);
+    pointer-events: none; /* Supaya nggak ganggu klik lain */
+    z-index: 10005;
+    animation: heartAnim 0.8s ease-out forwards;
+    user-select: none;
+}
+
+@keyframes heartAnim {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    40% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+
 
 
 
