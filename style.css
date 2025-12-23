@@ -432,6 +432,55 @@ footer {
     transition: all 0.5s ease;
 }
 
+/* Container Utama Wisuda */
+.graduation-section {
+    text-align: center;
+    padding: 40px 0;
+    margin: 30px 0;
+}
+
+/* Bingkai Polaroid */
+.polaroid-frame {
+    background: white;
+    padding: 15px 15px 40px 15px;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transform: rotate(-3deg); /* Membuat kesan miring estetik */
+    transition: transform 0.5s ease;
+    margin-bottom: 30px;
+}
+
+.polaroid-frame:hover {
+    transform: rotate(0deg) scale(1.05); /* Lurus saat disentuh */
+}
+
+.grad-photo {
+    width: 250px; /* Ukuran foto wisuda */
+    height: auto;
+    display: block;
+    filter: sepia(20%); /* Memberi sedikit kesan vintage */
+}
+
+.polaroid-caption {
+    font-family: 'Dancing Script', cursive; /* Gunakan font tulisan tangan */
+    color: #333;
+    font-size: 1.5rem;
+    margin-top: 15px;
+}
+
+/* Kartu Pesan Wisuda */
+.grad-message h3 {
+    color: var(--accent-color);
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 15px;
+}
+
+.grad-message p {
+    font-style: italic;
+    line-height: 1.8;
+}
+
+
 
 
 
