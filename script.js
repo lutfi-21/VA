@@ -1,229 +1,106 @@
-// 1. Fungsi Utama untuk Membuka Halaman
+// ==========================================
+// 1. FUNGSI UTAMA: BUKA UNDANGAN
+// ==========================================
 function bukaUndangan() {
-    console.log("Tombol berhasil diklik!"); // Untuk cek di console
-
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
 
-    // Jalankan sapaan (pastikan fungsi ini sudah kamu buat di bawah)
-    if (typeof setPersonalGreeting === "function") {
-        setPersonalGreeting();
-    }
+    // Set greeting berdasarkan waktu saat tombol diklik
+    setPersonalGreeting();
 
-    // Musik
+    // Jalankan Musik
     if (music) {
-        music.play().catch(e => console.log("Musik tertunda:", e));
-    }
-
-    // Transisi Halaman
-    setTimeout(() => {
-        if (opening) opening.style.display = 'none';
-        
-        if (main) {
-            main.style.display = 'block';
-            setTimeout(() => {
-                main.style.opacity = '1';
-            }, 50);
+        music.play().catch(error => console.log("Musik butuh interaksi user"));
+        if (typeof toggleVisualizer === "function") {
+            toggleVisualizer(true);
         }
-}
-               
-// 2. Fungsi Efek Salju
-function mulaiSalju() {
-    const container = document.body;
-    for (let i = 0; i < 40; i++) {
-        const snow = document.createElement('div');
-        snow.className = 'snowflake';
-        snow.innerHTML = '❄';
-        snow.style.left = Math.random() * 100 + 'vw';
-        snow.style.animationDuration = (Math.random() * 3 + 5) + 's';
-        snow.style.fontSize = (Math.random() * 10 + 10) + 'px';
-        container.appendChild(snow);
     }
-}
 
-// 3. Fungsi Animasi Scroll
-function cekScroll() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
-    });
-}
-
-// --- KONTROL VIDEO, MUSIK, VISUALIZER & PESAN RAHASIA ---
-window.onload = function() {
-    const videoPlayer = document.querySelector('video');
-    const musicPlayer = document.getElementById('bg-music');
-    const secretMessage = document.getElementById('secret-message');
-
-    if (videoPlayer) {
-        // 1. Saat Video DIPUTAR
-        videoPlayer.addEventListener('play', () => {
-            if (musicPlayer) musicPlayer.pause(); // Musik latar mati
-            toggleVisualizer(false);            // Animasi visualizer berhenti
-        });
-
-        // 2. Saat Video SELESAI
-        videoPlayer.addEventListener('ended', () => {
-            // Munculkan pesan rahasia
-            if (secretMessage) {
-                secretMessage.style.display = 'block';
+    // Transisi Smooth (Tanpa Tinta yang bikin error)
+    if (opening) {
+        opening.style.opacity = '0';
+        setTimeout(() => {
+            opening.style.display = 'none';
+            if (main) {
+                main.style.display = 'block';
                 setTimeout(() => {
-                    secretMessage.style.opacity = '1';
-                    secretMessage.scrollIntoView({ behavior: 'smooth' });
+                    main.style.opacity = '1';
                 }, 100);
             }
-            
-            // Putar musik lagi sebagai penutup (Outro)
-            if (musicPlayer) {
-                musicPlayer.volume = 0.3; // Volume lebih pelan agar syahdu
-                musicPlayer.play();
-                toggleVisualizer(true); // Animasi visualizer jalan lagi
-            }
-        });
+        }, 1100);
     }
-};
-
-function updateCountdown() {
-    const nextYear = new Date().getFullYear() + 1;
-    const target = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
-    const now = new Date().getTime();
-    const gap = target - now;
-
-    const d = Math.floor(gap / (1000 * 60 * 60 * 24));
-    const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
-
-    document.getElementById('days').innerText = d;
-    document.getElementById('hours').innerText = h;
-    document.getElementById('minutes').innerText = m;
-}
-setInterval(updateCountdown, 1000);
-
-// Fungsi untuk menjalankan/menghentikan animasi bar visualizer
-function toggleVisualizer(play) {
-    const bars = document.querySelectorAll('.bar');
-    bars.forEach(bar => {
-        if (play) {
-            bar.classList.add('animating');
-        } else {
-            bar.classList.remove('animating');
-        }
-    });
 }
 
-function typeWriter(element, text, speed = 50) {
-    let i = 0;
-    element.innerHTML = ""; // Kosongkan dulu
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
-
-// Cara panggilnya: Masukkan ke dalam fungsi bukaUndangan() 
-// tepat setelah main-container muncul.
-
-function akhiriSemua() {
-    const black = document.getElementById('black-screen');
-    const music = document.getElementById('bg-music');
-    
-    black.style.display = 'flex';
-    setTimeout(() => {
-        black.style.opacity = '1';
-        // Fade out musik
-        let fadeAudio = setInterval(() => {
-            if (music.volume > 0.05) {
-                music.volume -= 0.05;
-            } else {
-                music.pause();
-                clearInterval(fadeAudio);
-            }
-        }, 200);
-    }, 100);
-}
-
-// Munculkan tombol 'Pamit' saat video selesai (tambahkan di event listener video ended)
-// document.getElementById('final-exit').style.display = 'block';
-
+// ==========================================
+// 2. FUNGSI GREETING (SAPAAN PERSONAL)
+// ==========================================
 function setPersonalGreeting() {
     const greetingElement = document.getElementById('greeting-text');
+    if (!greetingElement) return;
+
     const hour = new Date().getHours();
     let greeting = "";
 
-    if (hour >= 5 && hour < 11) {
-        greeting = "Selamat Pagi";
-    } else if (hour >= 11 && hour < 15) {
-        greeting = "Selamat Siang";
-    } else if (hour >= 15 && hour < 18) {
-        greeting = "Selamat Sore";
-    } else {
-        greeting = "Selamat Malam";
-    }
+    if (hour >= 5 && hour < 11) greeting = "Selamat Pagi";
+    else if (hour >= 11 && hour < 15) greeting = "Selamat Siang";
+    else if (hour >= 15 && hour < 18) greeting = "Selamat Sore";
+    else greeting = "Selamat Malam";
 
-    // Kamu bisa kustomisasi sapaannya di sini
-    if (greetingElement) {
-        greetingElement.innerText = `${greeting}, Rafifah Diva Helsya, S.H.`;
-    }
+    greetingElement.innerText = `${greeting}, Kamu.`;
 }
 
-// Fungsi untuk memunculkan hati
+// ==========================================
+// 3. FUNGSI DOUBLE TAP HEART
+// ==========================================
 function createHeart(e) {
     const heart = document.createElement("div");
-    heart.innerHTML = "❤️"; // Kamu bisa ganti jadi emoji lain kalau mau
-    heart.className = "heart-pop";
+    heart.innerHTML = "❤️";
+    heart.className = "heart-pop"; // Pastikan CSS .heart-pop masih ada
     
-    // Tentukan posisi hati pas di titik klik
-    heart.style.left = (e.clientX || e.touches[0].clientX) + "px";
-    heart.style.top = (e.clientY || e.touches[0].clientY) + "px";
+    // Support untuk Mouse dan Touch
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    
+    heart.style.left = clientX + "px";
+    heart.style.top = clientY + "px";
     
     document.body.appendChild(heart);
-    
-    // Hapus elemen dari HTML setelah animasi selesai (1 detik)
-    setTimeout(() => {
-        heart.remove();
-    }, 800);
+    setTimeout(() => { heart.remove(); }, 800);
 }
 
-// Daftarkan fungsi ke semua foto yang ada class 'grad-photo' atau 'photo-item'
-document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
-    photo.addEventListener('dblclick', createHeart);
+// Pasang event double tap setelah halaman dimuat
+document.addEventListener("DOMContentLoaded", function() {
+    const photos = document.querySelectorAll('.grad-photo, .photo-item');
     
-    // Khusus untuk pengguna HP (Touch screen)
-    let lastTap = 0;
-    photo.addEventListener('touchstart', function(e) {
-        let curTime = new Date().getTime();
-        let tapLen = curTime - lastTap;
-        if (tapLen < 300 && tapLen > 0) {
-            createHeart(e);
-            e.preventDefault(); // Mencegah zoom bawaan HP
-        }
-        lastTap = curTime;
+    photos.forEach(photo => {
+        // Untuk Laptop/PC
+        photo.addEventListener('dblclick', createHeart);
+        
+        // Untuk HP (Touch)
+        let lastTap = 0;
+        photo.addEventListener('touchstart', function(e) {
+            let curTime = new Date().getTime();
+            let tapLen = curTime - lastTap;
+            if (tapLen < 300 && tapLen > 0) {
+                createHeart(e);
+            }
+            lastTap = curTime;
+        });
     });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// ==========================================
+// 4. FUNGSI SCROLL REVEAL (OPSIONAL)
+// ==========================================
+window.addEventListener("scroll", function() {
+    const reveals = document.querySelectorAll(".reveal");
+    for (let i = 0; i < reveals.length; i++) {
+        let windowHeight = window.innerHeight;
+        let elementTop = reveals[i].getBoundingClientRect().top;
+        let elementVisible = 150;
+        if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+        }
+    }
+});
