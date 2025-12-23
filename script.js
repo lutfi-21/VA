@@ -5,7 +5,6 @@ function bukaUndangan() {
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
-    const ink = document.getElementById('ink-layer');
 
     // Jalankan sapaan (pastikan fungsi ini sudah kamu buat di bawah)
     if (typeof setPersonalGreeting === "function") {
@@ -15,11 +14,6 @@ function bukaUndangan() {
     // Musik
     if (music) {
         music.play().catch(e => console.log("Musik tertunda:", e));
-    }
-
-    // Efek Tinta
-    if (ink) {
-        ink.classList.add('active');
     }
 
     // Transisi Halaman
@@ -32,14 +26,8 @@ function bukaUndangan() {
                 main.style.opacity = '1';
             }, 50);
         }
-
-        // Hilangkan lapisan tinta
-        setTimeout(() => {
-            if (ink) ink.classList.add('fade-out');
-        }, 600);
-        
-    }, 1200);
 }
+               
 // 2. Fungsi Efek Salju
 function mulaiSalju() {
     const container = document.body;
@@ -224,6 +212,7 @@ document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
         lastTap = curTime;
     });
 });
+
 
 
 
