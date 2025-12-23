@@ -1,62 +1,45 @@
 // 1. Fungsi Utama untuk Membuka Halaman
 function bukaUndangan() {
+    console.log("Tombol berhasil diklik!"); // Untuk cek di console
+
     const opening = document.getElementById('opening');
     const main = document.getElementById('main-container');
     const music = document.getElementById('bg-music');
     const ink = document.getElementById('ink-layer');
 
-    // Cek apakah fungsi sapaan ada sebelum dipanggil
+    // Jalankan sapaan (pastikan fungsi ini sudah kamu buat di bawah)
     if (typeof setPersonalGreeting === "function") {
         setPersonalGreeting();
     }
 
-    // Jalankan musik
+    // Musik
     if (music) {
-        music.play().catch(e => console.log("Audio play blocked by browser"));
-        if (typeof toggleVisualizer === "function") {
-            toggleVisualizer(true);
-        }
+        music.play().catch(e => console.log("Musik tertunda:", e));
     }
 
-    // EFEK TRANSISI TINTA
+    // Efek Tinta
     if (ink) {
-        ink.classList.add('active'); // Tinta menutup layar
+        ink.classList.add('active');
     }
 
-    // Tunggu tinta menutup sempurna, baru tukar konten
+    // Transisi Halaman
     setTimeout(() => {
         if (opening) opening.style.display = 'none';
         
         if (main) {
-            main.style.display = 'block'; // Munculkan container utama
-            // Kasih jeda sedikit agar display:block selesai diproses browser
+            main.style.display = 'block';
             setTimeout(() => {
                 main.style.opacity = '1';
-                if (typeof scrollReveal === "function") scrollReveal();
             }, 50);
         }
 
-        // Pudarkan lapisan tinta
+        // Hilangkan lapisan tinta
         setTimeout(() => {
             if (ink) ink.classList.add('fade-out');
-        }, 500);
+        }, 600);
         
-    }, 1200); // Durasi ini harus sinkron dengan transition di CSS (1.5s)
+    }, 1200);
 }
-
-    // Efek transisi opening
-    opening.style.opacity = '0';
-    setTimeout(() => {
-        opening.style.display = 'none';
-        main.style.display = 'block';
-        setTimeout(() => {
-            main.style.opacity = '1';
-            mulaiSalju();
-            cekScroll();
-        }, 100);
-    }, 1100);
-}
-
 // 2. Fungsi Efek Salju
 function mulaiSalju() {
     const container = document.body;
@@ -241,6 +224,7 @@ document.querySelectorAll('.grad-photo, .photo-item').forEach(photo => {
         lastTap = curTime;
     });
 });
+
 
 
 
