@@ -9,20 +9,35 @@ const bars = document.querySelectorAll('.bar');
 
 // 2. FUNGSI BUKA UNDANGAN
 function bukaUndangan() {
-    // Sapaan Waktu
+    const opening = document.getElementById('opening');
+    const main = document.getElementById('main-container');
+    const music = document.getElementById('bg-music');
+    const wrapper = document.querySelector('.visualizer-wrapper'); // Ambil bungkusnya
+    const bars = document.querySelectorAll('.bar'); // Ambil batang-batangnya
+
+    // 1. Sapaan Waktu
     if (greet) {
         const hr = new Date().getHours();
         let sapa = (hr < 11) ? "Selamat Pagi" : (hr < 15) ? "Selamat Siang" : (hr < 18) ? "Selamat Sore" : "Selamat Malam";
         greet.innerText = `${sapa}, va.`;
     }
 
-    // Musik & Visualizer
+    // 2. Musik & Visualizer (PAKSA MUNCUL & GOYANG)
     if (music) {
         music.play().catch(() => console.log("Izin audio diperlukan"));
-        bars.forEach(bar => bar.style.animationPlayState = 'running');
+        
+        // Membuka kunci 'display: none' di CSS
+        if (wrapper) {
+            wrapper.style.display = 'flex'; 
+        }
+        
+        // Menambahkan class 'animating' supaya @keyframes bounce jalan
+        bars.forEach(bar => {
+            bar.classList.add('animating');
+        });
     }
 
-    // Transisi Halaman
+    // 3. Transisi Halaman
     if (opening && main) {
         opening.style.opacity = '0';
         setTimeout(() => {
@@ -30,7 +45,7 @@ function bukaUndangan() {
             main.style.display = 'block';
             setTimeout(() => {
                 main.style.opacity = '1';
-                reveal(); // Munculkan teks
+                reveal(); // Munculkan teks satu per satu
             }, 100);
         }, 1100);
     }
@@ -106,3 +121,4 @@ setInterval(() => {
         document.getElementById("minutes").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
     }
 }, 1000);
+
