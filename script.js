@@ -122,3 +122,20 @@ setInterval(() => {
     }
 }, 1000);
 
+// Munculkan popup saat tombol Selesai diklik
+function tampilkanPesanAkhir() {
+    const modal = document.getElementById('final-modal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+// Tutup popup
+function tutupModal() {
+    const modal = document.getElementById('final-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+
