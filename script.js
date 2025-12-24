@@ -63,15 +63,31 @@ if (video) {
         bars.forEach(bar => bar.style.animationPlayState = 'running');
     };
 
-    video.onended = () => {
-        if (music) music.play();
-        bars.forEach(bar => bar.style.animationPlayState = 'running');
-        // Munculkan pesan rahasia
-        if (secret) {
-            secret.classList.add('show-secret');
-            secret.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
+   video.onended = function() {
+    if (music) music.play();
+    bars.forEach(bar => bar.classList.add('animating'));
+
+    // MUNCULKAN AREA TOMBOL
+    const secretArea = document.getElementById('secret-message');
+    if (secretArea) {
+        secretArea.style.display = 'block'; // Lawan dari display: none di CSS
+        setTimeout(() => {
+            secretArea.style.opacity = '1'; // Jalankan efek pudar (transition)
+            secretArea.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }
+};
+
+// FUNGSI UNTUK MEMBUKA KARTU PESAN SAAT TOMBOL DI-KLIK
+function tampilkanPesanAkhir() {
+    const tombol = document.getElementById('btn-selesai');
+    const kartu = document.getElementById('kartu-pesan');
+    
+    if (tombol) tombol.style.display = 'none'; // Sembunyikan tombolnya
+    if (kartu) {
+        kartu.style.display = 'block'; // Munculkan kartu pesan rahasiamu
+        kartu.style.animation = 'fadeIn 1s ease forwards';
+    }
 }
 
 // 4. SCROLL REVEAL
@@ -137,5 +153,6 @@ function tutupModal() {
         modal.style.display = 'none';
     }
 }
+
 
 
