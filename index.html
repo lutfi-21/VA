@@ -117,10 +117,18 @@
 </section>
 
         <div id="secret-message" class="hidden-message">
-    <div class="message-card">
-        <h3>VA...</h3>
-        <p>"Terima kasih sudah menjadi bagian dari tahun 2025 yang berharga buat abang va;(, byeeee❤️."</p>
-        <span class="heart">❤️</span>
+    <button id="btn-selesai" onclick="tampilkanPesanAkhir()">Klik Selesai</button>
+
+    <div id="final-modal" class="modal">
+        <div class="modal-content">
+            <h3>Terima kasih sudah meluangkan waktu...</h3>
+            <p>Makasih ya, Va, sudah mau baca dan lihat semuanya sampai akhir. Berarti banget buat aku.</p>
+            <hr>
+            <p style="font-size: 0.8rem; font-style: italic; color: #d4af37;">
+                Oiya, coba deh balik ke atas sebentar, terus <b>ketuk dua kali (double tap)</b> di foto-fotonya. Ada kejutan kecil di sana buat kamu. ❤️
+            </p>
+            <button onclick="tutupModal()">Tutup</button>
+        </div>
     </div>
 </div>
 
@@ -145,6 +153,7 @@
 </body>
 
 </html>
+
 
 
 
