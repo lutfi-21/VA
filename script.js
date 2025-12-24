@@ -131,22 +131,38 @@ document.addEventListener('touchstart', function (e) {
         }
         e.target.setAttribute('data-last-touch', now);
 
-        // B. Logika Long Press (Suara)
+        // B. Logika Long Press (Suara Kamu)
         pressTimer = window.setTimeout(function() {
             if (voiceNote) {
-                // Kecilkan musik agar suara kamu jelas
-                if (bgMusic) bgMusic.volume = 0.2; 
-                voiceNote.play();
+                // 1. Kecilkan musik latar secara ekstrem (hampir mute)
+                if (bgMusic) {
+                    bgMusic.volume = 0.05; 
+                }
                 
-                // Getar dikit di HP
-                if (navigator.vibrate) navigator.vibrate(50);
+                // 2. Mainkan suara kamu dari awal
+                voiceNote.currentTime = 0; 
+                voiceNote.volume = 1.0; // Pastikan suara kamu mentok kencang
                 
-                // Balikkan volume musik saat suara selesai
-                voiceNote.onended = () => { if (bgMusic) bgMusic.volume = 1; };
+                // Cek apakah suara berhasil dimainkan
+                voiceNote.play().then(() => {
+                    if (navigator.vibrate) navigator.vibrate(50); // Getar dikit
+                }).catch(err => console.log("Error play suara: ", err));
+                
+                // 3. Kembalikan volume musik latar saat suara kamu SELESAI
+                voiceNote.onended = () => { 
+                    if (bgMusic) {
+                        // Kita balikin perlahan biar nggak kaget telinganya
+                        let fadeIn = setInterval(() => {
+                            if (bgMusic.volume < 1.0) {
+                                bgMusic.volume += 0.1;
+                            } else {
+                                clearInterval(fadeIn);
+                            }
+                        }, 100); // Naik perlahan setiap 0.1 detik
+                    }
+                };
             }
-        }, 800); // 800ms atau hampir 1 detik ditekan
-    }
-}, { passive: true });
+        }, 800);
 
 document.addEventListener('touchend', function () {
     clearTimeout(pressTimer); // Batal bunyi kalau dilepas sebelum waktunya
@@ -170,5 +186,6 @@ setInterval(() => {
         m.innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
     }
 }, 1000);
+
 
 
