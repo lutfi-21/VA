@@ -116,19 +116,19 @@
     </div>
 </section>
 
-        <div id="secret-message" class="hidden-message">
-    <button id="btn-selesai" onclick="tampilkanPesanAkhir()">Klik Selesai</button>
+       <div id="secret-message" class="hidden-message">
+    <button id="btn-selesai" onclick="tampilkanPesanAkhir()" style="background: #d4af37; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; margin-bottom: 20px;">
+        KLIK SELESAI
+    </button>
 
-    <div id="final-modal" class="modal">
-        <div class="modal-content">
-            <h3>Terima kasih sudah meluangkan waktu...</h3>
-            <p>Makasih ya, Va, sudah mau baca dan lihat semuanya sampai akhir. Berarti banget buat aku.</p>
-            <hr>
-            <p style="font-size: 0.8rem; font-style: italic; color: #d4af37;">
-                Oiya, coba deh balik ke atas sebentar, terus <b>ketuk dua kali (double tap)</b> di foto-fotonya. Ada kejutan kecil di sana buat kamu. ❤️
-            </p>
-            <button onclick="tutupModal()">Tutup</button>
-        </div>
+    <div id="kartu-pesan" class="message-card" style="display: none;">
+        <h3>Terima kasih sudah meluangkan waktu...</h3>
+        <p>Makasih ya, Va, sudah mau baca dan lihat semuanya sampai akhir. Berarti banget buat aku.</p>
+        <hr style="border: 0.5px solid rgba(191, 161, 129, 0.3); margin: 15px 0;">
+        <p style="font-size: 0.85rem; color: #d4af37;">
+            <b>Tips:</b> Coba balik ke atas dan <b>ketuk dua kali (double tap)</b> di foto-fotonya ya. ❤️
+        </p>
+        <span class="heart">❤️</span>
     </div>
 </div>
 
@@ -153,6 +153,7 @@
 </body>
 
 </html>
+
 
 
 
