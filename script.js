@@ -1,27 +1,34 @@
-// ==========================================
-// 1. INISIALISASI VARIABEL & ELEMEN
-// ==========================================
+// 1. Ambil semua elemen berdasarkan ID di HTML kamu
 const music = document.getElementById('bg-music');
-const video = document.querySelector('.video-container-special video');
+const opening = document.getElementById('opening');
+const main = document.getElementById('main-container');
+const greet = document.getElementById('greeting-text');
+const video = document.querySelector('video'); // Mengambil tag video di dalam container
+const secret = document.getElementById('secret-message');
 const bars = document.querySelectorAll('.bar');
 
-// ==========================================
-// 2. FUNGSI UTAMA: BUKA UNDANGAN
-// ==========================================
+// 2. FUNGSI UTAMA: BUKA UNDANGAN (Dipanggil saat tombol diklik)
 function bukaUndangan() {
-    const opening = document.getElementById('opening');
-    const main = document.getElementById('main-container');
-
-    // Jalankan sapaan waktu
-    setPersonalGreeting();
-
-    // Mainkan Musik
-    if (music) {
-        music.play().catch(e => console.log("Musik butuh interaksi user"));
-        toggleVisualizer(true);
+    // Sapaan otomatis sesuai waktu
+    if (greet) {
+        const hr = new Date().getHours();
+        let sapa = "Selamat Malam";
+        if (hr < 11) sapa = "Selamat Pagi";
+        else if (hr < 15) sapa = "Selamat Siang";
+        else if (hr < 18) sapa = "Selamat Sore";
+        greet.innerText = sapa + ", va.";
     }
 
-    // Transisi Halaman (Opening ke Main)
+    // Jalankan Musik & Animasi Visualizer
+    if (music) {
+        music.play();
+        // Aktifkan animasi bar di pojok bawah
+        bars.forEach(bar => {
+            bar.style.animationPlayState = 'running';
+        });
+    }
+
+    // Transisi Halaman (Pudar dan Ganti Konten)
     if (opening && main) {
         opening.style.opacity = '0';
         setTimeout(() => {
@@ -29,146 +36,77 @@ function bukaUndangan() {
             main.style.display = 'block';
             setTimeout(() => {
                 main.style.opacity = '1';
-                // Panggil fungsi munculkan teks pertama kali
-                reveal();
+                reveal(); // Jalankan efek muncul teks
             }, 100);
         }, 1100);
     }
 }
 
-// ==========================================
-// 3. FUNGSI GREETING (SAPAAN OTOMATIS)
-// ==========================================
-function setPersonalGreeting() {
-    const greetingElement = document.getElementById('greeting-text');
-    if (!greetingElement) return;
-
-    const hour = new Date().getHours();
-    let greeting = "";
-
-    if (hour >= 5 && hour < 11) greeting = "Selamat Pagi";
-    else if (hour >= 11 && hour < 15) greeting = "Selamat Siang";
-    else if (hour >= 15 && hour < 18) greeting = "Selamat Sore";
-    else greeting = "Selamat Malam";
-
-    greetingElement.innerText = `${greeting}, va.`;
-}
-
-// ==========================================
-// 4. SMART MUSIC CONTROL & SECRET MESSAGE
-// ==========================================
+// 3. SMART VIDEO CONTROL (Musik mati pas video play)
 if (video) {
     video.onplay = function() {
         if (music) music.pause();
-        toggleVisualizer(false);
+        // Matikan animasi visualizer pas video jalan
+        bars.forEach(bar => { bar.style.animationPlayState = 'paused'; });
     };
-    
+
     video.onpause = function() {
-        if (music) {
-            music.play();
-            toggleVisualizer(true);
-        }
+        if (music) music.play();
+        // Hidupkan lagi visualizer pas video berhenti
+        bars.forEach(bar => { bar.style.animationPlayState = 'running'; });
     };
 
-    // SAAT VIDEO SELESAI DIPUTAR
     video.onended = function() {
-        if (music) {
-            music.play();
-            toggleVisualizer(true);
-        }
+        if (music) music.play();
+        bars.forEach(bar => { bar.style.animationPlayState = 'running'; });
         
-        // MUNCULKAN PESAN RAHASIA
-        const secretMessage = document.getElementById('secret-message');
-        if (secretMessage) {
-            secretMessage.classList.add('show-secret');
-            
-            // Otomatis scroll pelan ke arah pesan rahasia supaya dia sadar ada teks baru
-            setTimeout(() => {
-                secretMessage.scrollIntoView({ behavior: 'smooth' });
-            }, 500);
+        // MUNCULKAN PESAN RAHASIA otomatis pas video habis
+        if (secret) {
+            secret.classList.add('show-secret');
+            secret.scrollIntoView({ behavior: 'smooth' });
         }
     };
 }
 
-// ==========================================
-// 5. VISUALIZER ANIMATION CONTROL
-// ==========================================
-function toggleVisualizer(isActive) {
-    bars.forEach(bar => {
-        bar.style.animationPlayState = isActive ? 'running' : 'paused';
-    });
-}
-
-// ==========================================
-// 6. SCROLL REVEAL (MUNCULIN KONTEN SAAT SCROLL)
-// ==========================================
+// 4. SCROLL REVEAL (Efek teks muncul pas di-scroll)
 function reveal() {
     const reveals = document.querySelectorAll(".reveal");
-    for (let i = 0; i < reveals.length; i++) {
+    reveals.forEach(el => {
         let windowHeight = window.innerHeight;
-        let elementTop = reveals[i].getBoundingClientRect().top;
-        let elementVisible = 150;
-        
-        if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add("active");
+        let elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) {
+            el.classList.add("active");
         }
-    }
+    });
 }
 window.addEventListener("scroll", reveal);
 
-// ==========================================
-// 7. COUNTDOWN TAHUN BARU
-// ==========================================
+// 5. COUNTDOWN TAHUN BARU
 function updateCountdown() {
-    const nextYear = new Date("Jan 1, 2026 00:00:00").getTime();
+    const target = new Date("Jan 1, 2026 00:00:00").getTime();
     const now = new Date().getTime();
-    const distance = nextYear - now;
+    const diff = target - now;
 
-    if (distance > 0) {
-        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-        document.getElementById("days").innerText = d.toString().padStart(2, '0');
-        document.getElementById("hours").innerText = h.toString().padStart(2, '0');
-        document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+    if (diff > 0) {
+        document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
     }
 }
 setInterval(updateCountdown, 1000);
 
-// ==========================================
-// 8. DOUBLE TAP HEART (PADA FOTO)
-// ==========================================
-document.addEventListener("DOMContentLoaded", function() {
-    // Cari semua gambar di dalam gallery dan graduation section
-    const images = document.querySelectorAll('.gallery img, .grad-photo');
-    
-    images.forEach(img => {
-        let lastTap = 0;
-        img.addEventListener('click', function(e) {
-            let now = new Date().getTime();
-            let timesince = now - lastTap;
-            if (timesince < 300 && timesince > 0) {
-                createHeart(e);
-            }
-            lastTap = now;
-        });
-    });
+// 6. EFEK HATI PAS DOUBLE CLICK FOTO
+document.addEventListener('dblclick', function(e) {
+    if (e.target.tagName === 'IMG') {
+        const heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.style.position = "fixed";
+        heart.style.left = e.clientX + "px";
+        heart.style.top = e.clientY + "px";
+        heart.style.fontSize = "50px";
+        heart.style.pointerEvents = "none";
+        heart.style.animation = "heartPop 0.8s ease-out forwards";
+        document.body.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 800);
+    }
 });
-
-function createHeart(e) {
-    const heart = document.createElement("div");
-    heart.innerHTML = "❤️";
-    heart.className = "heart-pop"; // Pastikan CSS .heart-pop sudah ada
-    
-    // Posisi muncul hati
-    heart.style.left = e.clientX + "px";
-    heart.style.top = e.clientY + "px";
-    heart.style.position = "fixed";
-    heart.style.zIndex = "9999";
-    
-    document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, 800);
-}
-
-
