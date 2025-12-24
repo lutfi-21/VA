@@ -55,12 +55,12 @@ function setPersonalGreeting() {
 }
 
 // ==========================================
-// 4. SMART MUSIC CONTROL (MATI SAAT VIDEO PLAY)
+// 4. SMART MUSIC CONTROL & SECRET MESSAGE
 // ==========================================
 if (video) {
     video.onplay = function() {
         if (music) music.pause();
-        toggleVisualizer(false); // Matikan visualizer saat video main
+        toggleVisualizer(false);
     };
     
     video.onpause = function() {
@@ -70,10 +70,22 @@ if (video) {
         }
     };
 
+    // SAAT VIDEO SELESAI DIPUTAR
     video.onended = function() {
         if (music) {
             music.play();
             toggleVisualizer(true);
+        }
+        
+        // MUNCULKAN PESAN RAHASIA
+        const secretMessage = document.getElementById('secret-message');
+        if (secretMessage) {
+            secretMessage.classList.add('show-secret');
+            
+            // Otomatis scroll pelan ke arah pesan rahasia supaya dia sadar ada teks baru
+            setTimeout(() => {
+                secretMessage.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
         }
     };
 }
@@ -158,4 +170,5 @@ function createHeart(e) {
     document.body.appendChild(heart);
     setTimeout(() => { heart.remove(); }, 800);
 }
+
 
