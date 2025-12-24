@@ -124,3 +124,40 @@ function reveal() {
     });
 }
 window.addEventListener("scroll", reveal);
+
+// ==========================================
+// 8. FITUR HITUNG MUNDUR (COUNTDOWN)
+// ==========================================
+setInterval(() => {
+    // Target waktu: 1 Januari 2026 jam 00:00:00
+    const target = new Date("Jan 1, 2026 00:00:00").getTime();
+    const sekarang = new Date().getTime();
+    const selisih = target - sekarang;
+
+    // Ambil elemen HTML-nya
+    const d = document.getElementById("days");
+    const h = document.getElementById("hours");
+    const m = document.getElementById("minutes");
+    const s = document.getElementById("seconds"); // Tambahkan ini jika ada ID seconds
+
+    if (selisih > 0) {
+        // Hitung hari, jam, menit
+        const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+        const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+        const detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+        // Update tampilan ke HTML (tambahkan padStart agar tetap 2 digit, misal: 09)
+        if (d) d.innerText = hari.toString().padStart(2, '0');
+        if (h) h.innerText = jam.toString().padStart(2, '0');
+        if (m) m.innerText = menit.toString().padStart(2, '0');
+        if (s) s.innerText = detik.toString().padStart(2, '0');
+    } else {
+        // Kalau sudah lewat waktunya
+        if (d) d.innerText = "00";
+        if (h) h.innerText = "00";
+        if (m) m.innerText = "00";
+        if (s) s.innerText = "00";
+    }
+}, 1000);
+
