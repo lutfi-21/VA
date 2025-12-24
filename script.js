@@ -96,21 +96,42 @@ function reveal() {
 }
 window.addEventListener("scroll", reveal);
 
-// Double Tap Love
+let pressTimer;
+const voiceNote = document.getElementById('voice-note');
+
 document.addEventListener('touchstart', function (e) {
     if (e.target.tagName === 'IMG') {
+        // --- LOGIKA DOUBLE TAP (LOVE) ---
         let now = new Date().getTime();
         let lastTouch = e.target.getAttribute('data-last-touch') || 0;
         if (now - lastTouch < 300 && now - lastTouch > 0) {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.style.cssText = `position:fixed; left:${e.touches[0].clientX}px; top:${e.touches[0].clientY}px; font-size:50px; pointer-events:none; z-index:999999; transform:translate(-50%,-50%); animation:heartPop 0.8s forwards;`;
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 800);
+            createHeart(e.touches[0].clientX, e.touches[0].clientY);
         }
         e.target.setAttribute('data-last-touch', now);
+
+        // --- LOGIKA LONG PRESS (SUARA) ---
+        // Kalau ditekan selama 1 detik (1000ms), suara bunyi
+        pressTimer = window.setTimeout(function() {
+            if (voiceNote) {
+                // Kecilkan musik latar sebentar agar suara kamu jelas
+                if (music) music.volume = 0.2; 
+                voiceNote.play();
+                
+                // Balikkan volume musik saat suara kamu selesai
+                voiceNote.onended = () => { if (music) music.volume = 1; };
+                
+                // Kasih getaran dikit di HP kalau support
+                if (navigator.vibrate) navigator.vibrate(50); 
+                alert("Mendengarkan pesan suara..."); // Opsional, biar dia tahu ada suara
+            }
+        }, 1000);
     }
 }, { passive: true });
+
+document.addEventListener('touchend', function () {
+    // Kalau jari diangkat sebelum 1 detik, jangan bunyi suara
+    clearTimeout(pressTimer);
+});
 
 // Countdown
 setInterval(() => {
@@ -123,3 +144,4 @@ setInterval(() => {
         m.innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
     }
 }, 1000);
+
