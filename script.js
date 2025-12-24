@@ -1,34 +1,28 @@
-// 1. Ambil semua elemen berdasarkan ID di HTML kamu
+// 1. ELEMEN DASAR
 const music = document.getElementById('bg-music');
 const opening = document.getElementById('opening');
 const main = document.getElementById('main-container');
 const greet = document.getElementById('greeting-text');
-const video = document.querySelector('video'); // Mengambil tag video di dalam container
+const video = document.querySelector('video'); 
 const secret = document.getElementById('secret-message');
 const bars = document.querySelectorAll('.bar');
 
-// 2. FUNGSI UTAMA: BUKA UNDANGAN (Dipanggil saat tombol diklik)
+// 2. FUNGSI BUKA UNDANGAN
 function bukaUndangan() {
-    // Sapaan otomatis sesuai waktu
+    // Sapaan Waktu
     if (greet) {
         const hr = new Date().getHours();
-        let sapa = "Selamat Malam";
-        if (hr < 11) sapa = "Selamat Pagi";
-        else if (hr < 15) sapa = "Selamat Siang";
-        else if (hr < 18) sapa = "Selamat Sore";
-        greet.innerText = sapa + ", va.";
+        let sapa = (hr < 11) ? "Selamat Pagi" : (hr < 15) ? "Selamat Siang" : (hr < 18) ? "Selamat Sore" : "Selamat Malam";
+        greet.innerText = `${sapa}, va.`;
     }
 
-    // Jalankan Musik & Animasi Visualizer
+    // Musik & Visualizer
     if (music) {
-        music.play();
-        // Aktifkan animasi bar di pojok bawah
-        bars.forEach(bar => {
-            bar.style.animationPlayState = 'running';
-        });
+        music.play().catch(() => console.log("Izin audio diperlukan"));
+        bars.forEach(bar => bar.style.animationPlayState = 'running');
     }
 
-    // Transisi Halaman (Pudar dan Ganti Konten)
+    // Transisi Halaman
     if (opening && main) {
         opening.style.opacity = '0';
         setTimeout(() => {
@@ -36,31 +30,28 @@ function bukaUndangan() {
             main.style.display = 'block';
             setTimeout(() => {
                 main.style.opacity = '1';
-                reveal(); // Jalankan efek muncul teks
+                reveal(); // Munculkan teks
             }, 100);
         }, 1100);
     }
 }
 
-// 3. SMART VIDEO CONTROL (Musik mati pas video play)
+// 3. SMART VIDEO & PESAN RAHASIA
 if (video) {
-    video.onplay = function() {
+    video.onplay = () => {
         if (music) music.pause();
-        // Matikan animasi visualizer pas video jalan
-        bars.forEach(bar => { bar.style.animationPlayState = 'paused'; });
+        bars.forEach(bar => bar.style.animationPlayState = 'paused');
     };
 
-    video.onpause = function() {
+    video.onpause = () => {
         if (music) music.play();
-        // Hidupkan lagi visualizer pas video berhenti
-        bars.forEach(bar => { bar.style.animationPlayState = 'running'; });
+        bars.forEach(bar => bar.style.animationPlayState = 'running');
     };
 
-    video.onended = function() {
+    video.onended = () => {
         if (music) music.play();
-        bars.forEach(bar => { bar.style.animationPlayState = 'running'; });
-        
-        // MUNCULKAN PESAN RAHASIA otomatis pas video habis
+        bars.forEach(bar => bar.style.animationPlayState = 'running');
+        // Munculkan pesan rahasia
         if (secret) {
             secret.classList.add('show-secret');
             secret.scrollIntoView({ behavior: 'smooth' });
@@ -68,70 +59,50 @@ if (video) {
     };
 }
 
-// 4. SCROLL REVEAL (Efek teks muncul pas di-scroll)
+// 4. SCROLL REVEAL
 function reveal() {
     const reveals = document.querySelectorAll(".reveal");
     reveals.forEach(el => {
         let windowHeight = window.innerHeight;
         let elementTop = el.getBoundingClientRect().top;
-        if (elementTop < windowHeight - 100) {
-            el.classList.add("active");
-        }
+        if (elementTop < windowHeight - 100) el.classList.add("active");
     });
 }
 window.addEventListener("scroll", reveal);
 
-// 5. COUNTDOWN TAHUN BARU
-function updateCountdown() {
-    const target = new Date("Jan 1, 2026 00:00:00").getTime();
-    const now = new Date().getTime();
-    const diff = target - now;
-
-    if (diff > 0) {
-        document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-    }
-}
-setInterval(updateCountdown, 1000);
-
-// 6. EFEK HATI (PEKA UNTUK HP & LAPTOP)
+// 5. DOUBLE TAP LOVE (HP & LAPTOP)
 function createHeart(x, y) {
     const heart = document.createElement("div");
     heart.innerHTML = "❤️";
-    heart.style.position = "fixed";
+    heart.className = "heart-pop-manual"; // Nama class unik agar tidak bentrok
     heart.style.left = x + "px";
     heart.style.top = y + "px";
-    heart.style.fontSize = "50px";
-    heart.style.pointerEvents = "none";
-    heart.style.zIndex = "999999";
-    heart.style.transform = "translate(-50%, -50%)";
-    heart.style.animation = "heartPop 0.8s ease-out forwards";
     document.body.appendChild(heart);
-    
-    // Hapus hati setelah animasi selesai
-    setTimeout(() => { heart.remove(); }, 800);
+    setTimeout(() => heart.remove(), 800);
 }
 
-// Logika Double Tap khusus untuk HP & Klik untuk Laptop
 document.addEventListener('touchstart', function (e) {
-    // Cek apakah yang di-tap adalah gambar (IMG)
     if (e.target.tagName === 'IMG') {
         let now = new Date().getTime();
         let lastTouch = e.target.getAttribute('data-last-touch') || 0;
-        let timeout = now - lastTouch;
-        
-        if (timeout < 300 && timeout > 0) {
-            // Jika ditap 2x dalam waktu kurang dari 0.3 detik
+        if (now - lastTouch < 300 && now - lastTouch > 0) {
             createHeart(e.touches[0].clientX, e.touches[0].clientY);
         }
         e.target.setAttribute('data-last-touch', now);
     }
-}, { passive: false });
+}, { passive: true });
 
-// Tetap sediakan dblclick untuk pengguna Laptop
-document.addEventListener('dblclick', function (e) {
-    if (e.target.tagName === 'IMG') {
-        createHeart(e.clientX, e.clientY);
-    }
+document.addEventListener('dblclick', (e) => {
+    if (e.target.tagName === 'IMG') createHeart(e.clientX, e.clientY);
 });
+
+// 6. COUNTDOWN 2026
+setInterval(() => {
+    const target = new Date("Jan 1, 2026 00:00:00").getTime();
+    const diff = target - new Date().getTime();
+    if (diff > 0) {
+        document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+        document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+        document.getElementById("minutes").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+    }
+}, 1000);
