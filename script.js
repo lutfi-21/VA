@@ -95,18 +95,43 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000);
 
-// 6. EFEK HATI PAS DOUBLE CLICK FOTO
-document.addEventListener('dblclick', function(e) {
+// 6. EFEK HATI (PEKA UNTUK HP & LAPTOP)
+function createHeart(x, y) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+    heart.style.fontSize = "50px";
+    heart.style.pointerEvents = "none";
+    heart.style.zIndex = "999999";
+    heart.style.transform = "translate(-50%, -50%)";
+    heart.style.animation = "heartPop 0.8s ease-out forwards";
+    document.body.appendChild(heart);
+    
+    // Hapus hati setelah animasi selesai
+    setTimeout(() => { heart.remove(); }, 800);
+}
+
+// Logika Double Tap khusus untuk HP & Klik untuk Laptop
+document.addEventListener('touchstart', function (e) {
+    // Cek apakah yang di-tap adalah gambar (IMG)
     if (e.target.tagName === 'IMG') {
-        const heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.style.position = "fixed";
-        heart.style.left = e.clientX + "px";
-        heart.style.top = e.clientY + "px";
-        heart.style.fontSize = "50px";
-        heart.style.pointerEvents = "none";
-        heart.style.animation = "heartPop 0.8s ease-out forwards";
-        document.body.appendChild(heart);
-        setTimeout(() => { heart.remove(); }, 800);
+        let now = new Date().getTime();
+        let lastTouch = e.target.getAttribute('data-last-touch') || 0;
+        let timeout = now - lastTouch;
+        
+        if (timeout < 300 && timeout > 0) {
+            // Jika ditap 2x dalam waktu kurang dari 0.3 detik
+            createHeart(e.touches[0].clientX, e.touches[0].clientY);
+        }
+        e.target.setAttribute('data-last-touch', now);
+    }
+}, { passive: false });
+
+// Tetap sediakan dblclick untuk pengguna Laptop
+document.addEventListener('dblclick', function (e) {
+    if (e.target.tagName === 'IMG') {
+        createHeart(e.clientX, e.clientY);
     }
 });
