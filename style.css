@@ -523,6 +523,23 @@ footer {
     opacity: 1;                 /* Teks jadi terlihat jelas */
 }
 
+/* Kondisi awal: Tersembunyi total */
+.hidden-message {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 2s ease; /* Transisi halus selama 2 detik */
+    pointer-events: none; /* Tidak bisa diklik sebelum muncul */
+    margin-top: 40px;
+}
+
+/* Saat class ini ditambah oleh JavaScript setelah video selesai */
+.hidden-message.show-secret {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+
 
 
 
