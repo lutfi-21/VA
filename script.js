@@ -168,8 +168,7 @@ setInterval(() => {
 // --- FITUR SHAKE SURPRISE ---
 let lastUpdate = 0;
 let x = 0, y = 0, z = 0, lastX = 0, lastY = 0, lastZ = 0;
-const SHAKE_THRESHOLD = 800; // Sensitivitas goyangan (semakin kecil semakin sensitif)
-
+const SHAKE_THRESHOLD = 150; // Angka lebih kecil = lebih gampang bunyi
 function deviceMotionHandler(event) {
     let acceleration = event.accelerationIncludingGravity;
     let curTime = new Date().getTime();
@@ -237,5 +236,6 @@ function requestShakePermission() {
 // PANGGIL fungsi izin ini di dalam fungsi bukaUndangan() kamu yang lama
 // Tambahkan baris ini di dalam function bukaUndangan() { ... }
 // requestShakePermission();
+
 
 
