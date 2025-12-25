@@ -10,6 +10,10 @@ let pressTimer;
 
 // 2. Fungsi Buka Halaman
 function bukaUndangan() {
+    function bukaUndangan() {
+    requestShakePermission(); // <--- TAMBAHKAN INI BIAR SENSORNYA AKTIF
+    // ... sisa kode lainnya ...
+}
     if (music) {
         music.play().catch(e => console.log("Izin musik diperlukan"));
         const wrapper = document.querySelector('.visualizer-wrapper');
@@ -160,4 +164,78 @@ setInterval(() => {
         if (s) s.innerText = "00";
     }
 }, 1000);
+
+// --- FITUR SHAKE SURPRISE ---
+let lastUpdate = 0;
+let x = 0, y = 0, z = 0, lastX = 0, lastY = 0, lastZ = 0;
+const SHAKE_THRESHOLD = 800; // Sensitivitas goyangan (semakin kecil semakin sensitif)
+
+function deviceMotionHandler(event) {
+    let acceleration = event.accelerationIncludingGravity;
+    let curTime = new Date().getTime();
+
+    if ((curTime - lastUpdate) > 100) {
+        let diffTime = curTime - lastUpdate;
+        lastUpdate = curTime;
+
+        x = acceleration.x;
+        y = acceleration.y;
+        z = acceleration.z;
+
+        let speed = Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime * 10000;
+
+        if (speed > SHAKE_THRESHOLD) {
+            mainkanKejutan();
+        }
+
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+    }
+}
+
+function mainkanKejutan() {
+    const snd = document.getElementById('audio-kejutan');
+    const bgm = document.getElementById('bg-music');
+    
+    // Cegah bunyi berkali-kali dalam satu waktu
+    if (snd.paused) {
+        if (bgm) bgm.volume = 0.1; // Kecilkan musik bentar
+        snd.play();
+        
+        // Kasih efek visual: layar kedip putih bentar kayak flash foto
+        document.body.style.backgroundColor = "white";
+        setTimeout(() => { document.body.style.backgroundColor = "#0a0a0a"; }, 100);
+
+        snd.onended = () => { if (bgm) bgm.volume = 1.0; };
+        
+        // Munculin banyak Love sekalian
+        for(let i=0; i<10; i++) {
+            setTimeout(() => {
+                createHeart(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+            }, i * 100);
+        }
+    }
+}
+
+// Minta izin akses sensor (khusus iPhone/iOS)
+function requestShakePermission() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('devicemotion', deviceMotionHandler, false);
+                }
+            })
+            .catch(console.error);
+    } else {
+        // Untuk Android langsung pasang listener
+        window.addEventListener('devicemotion', deviceMotionHandler, false);
+    }
+}
+
+// PANGGIL fungsi izin ini di dalam fungsi bukaUndangan() kamu yang lama
+// Tambahkan baris ini di dalam function bukaUndangan() { ... }
+// requestShakePermission();
+
 
