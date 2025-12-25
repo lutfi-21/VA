@@ -202,7 +202,7 @@ function mainkanKejutan() {
     
     // Cegah bunyi berkali-kali dalam satu waktu
     if (snd.paused) {
-        if (bgm) bgm.volume = 0.1; // Kecilkan musik bentar
+        if (bgm) bgm.volume = 0.05; // Kecilkan musik bentar
         snd.play();
         
         // Kasih efek visual: layar kedip putih bentar kayak flash foto
@@ -239,6 +239,7 @@ function requestShakePermission() {
 // PANGGIL fungsi izin ini di dalam fungsi bukaUndangan() kamu yang lama
 // Tambahkan baris ini di dalam function bukaUndangan() { ... }
 // requestShakePermission();
+
 
 
 
