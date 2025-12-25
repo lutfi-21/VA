@@ -10,10 +10,10 @@ let pressTimer;
 
 // 2. Fungsi Buka Halaman
 function bukaUndangan() {
-    function bukaUndangan() {
-    requestShakePermission(); // <--- TAMBAHKAN INI BIAR SENSORNYA AKTIF
-    // ... sisa kode lainnya ...
-}
+    // 1. Aktifkan sensor goyang (WAJIB paling atas)
+    requestShakePermission(); 
+
+    // 2. Mainkan musik latar
     if (music) {
         music.play().catch(e => console.log("Izin musik diperlukan"));
         const wrapper = document.querySelector('.visualizer-wrapper');
@@ -21,12 +21,14 @@ function bukaUndangan() {
         bars.forEach(bar => bar.classList.add('animating'));
     }
 
+    // 3. Set sapaan otomatis
     if (greet) {
         const hr = new Date().getHours();
         let sapa = (hr < 11) ? "Selamat Pagi" : (hr < 15) ? "Selamat Siang" : (hr < 18) ? "Selamat Sore" : "Selamat Malam";
         greet.innerText = `${sapa}, va.`;
     }
 
+    // 4. Transisi halaman
     if (opening && main) {
         opening.style.opacity = '0';
         setTimeout(() => {
@@ -236,6 +238,7 @@ function requestShakePermission() {
 // PANGGIL fungsi izin ini di dalam fungsi bukaUndangan() kamu yang lama
 // Tambahkan baris ini di dalam function bukaUndangan() { ... }
 // requestShakePermission();
+
 
 
 
